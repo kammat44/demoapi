@@ -2,7 +2,11 @@ package com.kaminski.demoapi.model;
 
 
 import com.google.gson.Gson;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.persistence.*;
 import java.io.BufferedReader;
@@ -25,28 +29,37 @@ public class RateSearch {
     private int id;
 
 
-    private String rateDate;
+    private String rateDate = "2008-11-11";
     private String searchDate;
-    private float usd =checkUSDvalue();
+//    private float usd =checkUSDvalue();
+    private float usd;
 
 
 
 
     @PrePersist
-    protected void onCreate() {
+    protected void onCreate() throws IOException {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         searchDate = dateFormat.format(date);
+        usd=checkUSDvalue(rateDate);
     }
 
-    public Float  checkUSDvalue() throws IOException {
-//        String urlString = "https://api.frankfurter.app/"+rateDate+"?to=USD";
-        String urlString = "https://api.frankfurter.app/1999-02-22?to=USD";
+//    @PreUpdate
+//    protected void onUpdate() throws IOException {
+//        usd=checkUSDvalue(rateDate);
+//    }
+
+
+
+    public Float  checkUSDvalue(String date) throws IOException {
+        String urlString = "https://api.frankfurter.app/"+date+"?to=USD";
+//        String urlString = "https://api.frankfurter.app/1999-02-22?to=USD";
 
         URL url = new URL(urlString);
         BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
         Base base = new Gson().fromJson(br.readLine(), Base.class);
-        this.rateDate=rateDate+"test";
+//        this.rateDate=rateDate+"test";
         return base.getRates().getUSD();
     }
 
