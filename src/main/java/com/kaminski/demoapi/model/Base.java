@@ -1,17 +1,11 @@
 package com.kaminski.demoapi.model;
 
-import java.util.ArrayList;
-
 public class Base {
     private float amount;
     private String base;
     private String date;
     private Rates rates;
 
-
-
-
-    // Getter Methods
 
     public float getAmount() {
         return amount;
@@ -27,7 +21,7 @@ public class Base {
 
     public Rates getRates() {return rates;}
 
-    // Setter Methods
+
 
     public void setAmount(float amount) {
         this.amount = amount;
